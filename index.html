@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataHub — Data Practice Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D1117;
+  --bg2: #161B22;
+  --bg3: #21262D;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #E6EDF3;
+  --text2: #8B949E;
+  --text3: #6E7681;
+  --green: #1A7A4A;
+  --green-l: #9FE1CB;
+  --amber: #854F0B;
+  --amber-l: #FAC775;
+  --blue: #185FA5;
+  --blue-l: #B5D4F4;
+  --purple: #534AB7;
+  --purple-l: #CECBF6;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.6; }
+
+/* NAV */
+nav { border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; height: 56px; gap: 32px; position: sticky; top: 0; background: rgba(13,17,23,0.95); backdrop-filter: blur(8px); z-index: 100; }
+.nav-logo { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+.nav-logo span { color: var(--green-l); }
+.nav-links { display: flex; gap: 24px; margin-left: auto; }
+.nav-links a { color: var(--text2); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.15s; }
+.nav-links a:hover { color: var(--text); }
+.nav-cta { background: var(--green); color: #fff; border: none; padding: 7px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; }
+
+/* HERO */
+.hero { padding: 64px 32px 48px; max-width: 900px; margin: 0 auto; text-align: center; }
+.hero-badge { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-l); background: rgba(26,122,74,0.15); border: 1px solid rgba(26,122,74,0.3); padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
+.hero h1 { font-size: 42px; font-weight: 600; letter-spacing: -1px; line-height: 1.15; margin-bottom: 16px; color: var(--text); }
+.hero h1 em { color: var(--green-l); font-style: normal; }
+.hero p { font-size: 16px; color: var(--text2); max-width: 540px; margin: 0 auto 32px; }
+.hero-stats { display: flex; gap: 0; justify-content: center; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 560px; margin: 0 auto; }
+.stat { flex: 1; padding: 16px 12px; text-align: center; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-n { font-size: 22px; font-weight: 600; color: var(--text); font-family: 'DM Mono', monospace; }
+.stat-l { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* LEVEL TABS */
+.level-nav { display: flex; gap: 8px; padding: 0 32px; max-width: 1100px; margin: 32px auto 0; flex-wrap: wrap; }
+.lvl-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.15s; display: flex; align-items: center; gap: 8px; }
+.lvl-btn:hover { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+.lvl-btn.active { color: #fff; border-color: transparent; }
+.lvl-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* CONTENT */
+.content { max-width: 1100px; margin: 0 auto; padding: 24px 32px 64px; }
+.level-section { display: none; }
+.level-section.active { display: block; }
+
+/* LEVEL HEADER */
+.level-head { border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+.lh-title { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.lh-sub { font-size: 13px; opacity: 0.8; margin-bottom: 12px; color: #fff; }
+.lh-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.lh-tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.lh-right { text-align: right; }
+.lh-badge-text { font-size: 12px; font-weight: 600; color: #fff; opacity: 0.9; }
+.lh-meta { font-size: 12px; color: #fff; opacity: 0.7; margin-top: 4px; }
+
+/* LESSON CARDS */
+.lesson-card { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; overflow: hidden; transition: border-color 0.15s; }
+.lesson-card:hover { border-color: var(--border2); }
+.card-row { display: grid; grid-template-columns: 64px 1fr; }
+.card-num { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 14px 8px; }
+.card-code { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: #fff; }
+.card-dot { width: 6px; height: 6px; border-radius: 50%; opacity: 0.6; background: #fff; }
+.card-body { padding: 12px 16px; background: var(--bg2); }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.card-sub { font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.tag { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
+.tag-ds { background: rgba(24,95,165,0.2); color: #B5D4F4; border: 1px solid rgba(24,95,165,0.3); }
+.tag-tool { background: rgba(26,122,74,0.15); color: #9FE1CB; border: 1px solid rgba(26,122,74,0.25); }
+.tag-time { background: rgba(133,79,11,0.2); color: #FAC775; border: 1px solid rgba(133,79,11,0.3); }
+.tag-pre { background: rgba(255,255,255,0.05); color: var(--text3); border: 1px solid var(--border); }
+.tag-skill { background: rgba(26,122,74,0.2); color: #9FE1CB; border: 1px solid rgba(26,122,74,0.35); }
+.tag-project { background: rgba(133,79,11,0.25); color: #FAC775; border: 1px solid rgba(133,79,11,0.4); }
+
+/* CONTENT GRID */
+.content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.c-block { border-radius: var(--radius-sm); padding: 10px 12px; }
+.c-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.c-text { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.c-text.mono { font-family: 'DM Mono', monospace; font-size: 11px; }
+
+/* JOURNEY + ACTIONS */
+.card-footer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.journey { display: flex; gap: 3px; flex-wrap: wrap; align-items: center; }
+.jp { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
+.jp-sep { font-size: 10px; color: var(--text3); }
+.btn-start { margin-left: auto; font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+.btn-start:hover { opacity: 0.85; }
+
+/* PROGRESS */
+.level-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.progress-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.4s; }
+.progress-label { font-size: 12px; color: var(--text3); white-space: nowrap; font-family: 'DM Mono', monospace; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .content-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 28px; }
+  nav { padding: 0 16px; }
+  .content { padding: 16px 16px 48px; }
+  .level-nav { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Data<span>Hub</span></div>
+  <div class="nav-links">
+    <a href="#">Syllabus</a>
+    <a href="#">Datasets</a>
+    <a href="#">Progress</a>
+  </div>
+  <button class="nav-cta">Start Learning</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Excel · SQL · Python · Market Research</div>
+  <h1>Learn data analysis by<br><em>actually doing it</em></h1>
+  <p>Real datasets. Step-by-step lessons. Practice tasks with answers and hints. From zero to job-ready analyst.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">Levels</div></div>
+    <div class="stat"><div class="stat-n">25</div><div class="stat-l">Lessons</div></div>
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">Projects</div></div>
+    <div class="stat"><div class="stat-n">6</div><div class="stat-l">Datasets</div></div>
+    <div class="stat"><div class="stat-n">12w</div><div class="stat-l">Curriculum</div></div>
+  </div>
+</div>
+
+<div class="level-nav" id="levelNav"></div>
+<div class="content" id="mainContent"></div>
+
+<script src="js/data.js"></script>
+<script>
+const levelColors = [
+  { bg:"#1A7A4A", dark:"#085041", light:"#9FE1CB" },
+  { bg:"#854F0B", dark:"#633806", light:"#FAC775" },
+  { bg:"#185FA5", dark:"#0C447C", light:"#B5D4F4" },
+  { bg:"#534AB7", dark:"#3C3489", light:"#CECBF6" }
+];
+
+const journeySteps = ["Theory","Example","Guided steps","Your task","Check answer","Hint"];
+const jColors = [
+  ["rgba(24,95,165,0.2)","#B5D4F4"],
+  ["rgba(133,79,11,0.2)","#FAC775"],
+  ["rgba(26,122,74,0.15)","#9FE1CB"],
+  ["rgba(83,74,183,0.2)","#CECBF6"],
+  ["rgba(192,57,43,0.2)","#F09595"],
+  ["rgba(255,255,255,0.06)","#8B949E"]
+];
+
+const cBlocks = [
+  { label:"Theory", lc:"#85B7EB", bg:"rgba(24,95,165,0.1)", key:"theory" },
+  { label:"Example", lc:"#FAC775", bg:"rgba(133,79,11,0.1)", key:"example" },
+  { label:"Practice task", lc:"#9FE1CB", bg:"rgba(26,122,74,0.08)", key:"task" },
+  { label:"Expected output", lc:"#CECBF6", bg:"rgba(83,74,183,0.1)", key:"expected" }
+];
+
+function buildNav() {
+  const nav = document.getElementById('levelNav');
+  DATAHUB.levels.forEach((lvl, i) => {
+    const c = levelColors[i];
+    const btn = document.createElement('button');
+    btn.className = 'lvl-btn' + (i === 0 ? ' active' : '');
+    btn.innerHTML = `<span class="lvl-dot" style="background:${c.bg};"></span>${lvl.code} — ${lvl.title}`;
+    if (i === 0) btn.style.cssText = `background:${c.bg};border-color:${c.bg};color:#fff;`;
+    btn.onclick = () => switchLevel(i, btn, c);
+    nav.appendChild(btn);
+  });
+}
+
+function switchLevel(idx, btn, c) {
+  document.querySelectorAll('.lvl-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = '';
+    b.style.borderColor = '';
+    b.style.color = '';
+  });
+  btn.classList.add('active');
+  btn.style.cssText = `background:${c.bg};border-color:${c.bg};color:#fff;`;
+  document.querySelectorAll('.level-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('level-' + idx);
+  sec.classList.add('active');
+  if (!sec.dataset.built) buildLevel(idx);
+}
+
+function buildLevel(idx) {
+  const lvl = DATAHUB.levels[idx];
+  const c = levelColors[idx];
+  const sec = document.getElementById('level-' + idx);
+  sec.dataset.built = '1';
+
+  // Header
+  const head = document.createElement('div');
+  head.className = 'level-head';
+  head.style.background = `linear-gradient(135deg, ${c.bg} 0%, ${c.dark} 100%)`;
+  head.innerHTML = `
+    <div>
+      <div class="lh-title">${lvl.code} — ${lvl.title}</div>
+      <div class="lh-sub">${lvl.subtitle}</div>
+      <div class="lh-tags">
+        <span class="lh-tag" style="background:${c.dark};color:${c.light};">Dataset: ${lvl.dataset}</span>
+        <span class="lh-tag" style="background:${c.dark};color:${c.light};">Excel</span>
+        <span class="lh-tag" style="background:${c.dark};color:${c.light};">${lvl.weeks}</span>
+        <span class="lh-tag" style="background:${c.dark};color:${c.light};">${lvl.hours}</span>
+        <span class="lh-tag" style="background:${c.dark};color:${c.light};">${lvl.lessons.length} lessons</span>
+      </div>
+    </div>
+    <div class="lh-right">
+      <div class="lh-badge-text">Badge: ${lvl.badge}</div>
+      <div class="lh-meta">${lvl.lessons.length} lessons + project</div>
+    </div>`;
+  sec.appendChild(head);
+
+  // Progress
+  const prog = document.createElement('div');
+  prog.className = 'level-progress';
+  prog.innerHTML = `
+    <div class="progress-track"><div class="progress-fill" style="background:${c.bg};" id="prog-${idx}"></div></div>
+    <div class="progress-label" id="prog-label-${idx}">0 / ${lvl.lessons.length}</div>`;
+  sec.appendChild(prog);
+
+  // Lessons
+  lvl.lessons.forEach((lesson, li) => {
+    const isProject = lesson.type === 'Project';
+    const numBg = isProject ? '#854F0B' : c.bg;
+
+    // Get text values safely
+    const theoryText = lesson.theory ? lesson.theory.body || '' : '';
+    const exampleText = lesson.example ? (lesson.example.steps ? lesson.example.steps[0] || '' : '') : '';
+    const taskText = lesson.task ? lesson.task.description || '' : '';
+    const expectedText = lesson.answers ? lesson.answers[0] || '' : '';
+
+    const card = document.createElement('div');
+    card.className = 'lesson-card';
+    card.id = `card-${idx}-${li}`;
+
+    card.innerHTML = `
+      <div class="card-row">
+        <div class="card-num" style="background:${numBg};">
+          <div class="card-dot"></div>
+          <div class="card-code">${lesson.code}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${lesson.title}</div>
+          <div class="card-sub">${lesson.sub}</div>
+          <div class="card-tags">
+            <span class="tag tag-ds">${lesson.dataset}</span>
+            ${lesson.tools.map(t => `<span class="tag tag-tool">${t}</span>`).join('')}
+            <span class="tag tag-time">${lesson.time}</span>
+            <span class="tag tag-pre">Pre-req: ${lesson.prereq}</span>
+            <span class="tag ${isProject ? 'tag-project' : 'tag-skill'}">${lesson.type}</span>
+          </div>
+          <div class="content-grid">
+            <div class="c-block" style="background:${cBlocks[0].bg};">
+              <div class="c-label" style="color:${cBlocks[0].lc};">${cBlocks[0].label}</div>
+              <div class="c-text">${theoryText.substring(0,120)}${theoryText.length > 120 ? '...' : ''}</div>
+            </div>
+            <div class="c-block" style="background:${cBlocks[1].bg};">
+              <div class="c-label" style="color:${cBlocks[1].lc};">${cBlocks[1].label}</div>
+              <div class="c-text mono">${exampleText.substring(0,100)}${exampleText.length > 100 ? '...' : ''}</div>
+            </div>
+            <div class="c-block" style="background:${cBlocks[2].bg};">
+              <div class="c-label" style="color:${cBlocks[2].lc};">${cBlocks[2].label}</div>
+              <div class="c-text">${taskText.substring(0,100)}${taskText.length > 100 ? '...' : ''}</div>
+            </div>
+            <div class="c-block" style="background:${cBlocks[3].bg};">
+              <div class="c-label" style="color:${cBlocks[3].lc};">${cBlocks[3].label}</div>
+              <div class="c-text">${expectedText.substring(0,100)}${expectedText.length > 100 ? '...' : ''}</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="journey">
+              ${journeySteps.map((s,i) => `
+                <span class="jp" style="background:${jColors[i][0]};color:${jColors[i][1]};">${s}</span>
+                ${i < 5 ? '<span class="jp-sep">→</span>' : ''}
+              `).join('')}
+            </div>
+            <button class="btn-start" style="background:${numBg};color:#fff;"
+              onclick="startLesson(${idx},${li})">
+              Start lesson →
+            </button>
+          </div>
+        </div>
+      </div>`;
+    sec.appendChild(card);
+  });
+}
+
+function startLesson(levelIdx, lessonIdx) {
+  const params = new URLSearchParams({ l: levelIdx, i: lessonIdx });
+  window.location.href = 'lesson.html?' + params.toString();
+}
+
+function buildAll() {
+  const content = document.getElementById('mainContent');
+  DATAHUB.levels.forEach((lvl, i) => {
+    const sec = document.createElement('div');
+    sec.className = 'level-section' + (i === 0 ? ' active' : '');
+    sec.id = 'level-' + i;
+    content.appendChild(sec);
+  });
+  buildNav();
+  buildLevel(0);
+}
+
+buildAll();
+</script>
+</body>
+</html>
