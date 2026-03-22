@@ -4,120 +4,106 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DataHub — Lesson</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
   --bg:#0D1117; --bg2:#161B22; --bg3:#21262D;
   --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
   --text:#E6EDF3; --text2:#8B949E; --text3:#6E7681;
   --green:#1A7A4A; --green-l:#9FE1CB;
+  --accent:#1A7A4A;
   --radius:10px; --radius-sm:6px;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;}
-
-nav{border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:52px;gap:16px;position:sticky;top:0;background:rgba(13,17,23,0.96);backdrop-filter:blur(8px);z-index:100;}
-.nav-logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+nav{border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:52px;gap:16px;position:sticky;top:0;background:rgba(13,17,23,0.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:100;}
+.nav-logo{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.3px;font-family:var(--font-sans);}
 .nav-logo span{color:var(--green-l);}
-.nav-back{color:var(--text2);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;transition:color 0.15s;}
+.nav-back{color:var(--text2);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;transition:color 0.15s;font-family:var(--font-sans);}
 .nav-back:hover{color:var(--text);}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
 .step-indicator{display:flex;gap:6px;align-items:center;}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all 0.2s;cursor:pointer;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all 0.2s;cursor:pointer;flex-shrink:0;}
 .step-dot.active{width:24px;border-radius:4px;}
-.step-dot.done{background:#1A7A4A;}
-
 .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 52px);}
-
-/* SIDEBAR */
 .sidebar{border-right:1px solid var(--border);padding:24px 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
-.sidebar-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);padding:0 20px 12px;}
+.sidebar-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);padding:0 20px 12px;font-family:var(--font-sans);}
 .step-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:background 0.15s;border-left:2px solid transparent;}
 .step-item:hover{background:var(--bg3);}
-.step-item.active{background:var(--bg3);border-left-color:var(--accent,var(--green));}
-.step-item.done .step-icon{background:var(--green);color:#fff;}
-.step-icon{width:24px;height:24px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;color:var(--text3);transition:all 0.2s;}
-.step-item.active .step-icon{border-color:var(--accent,var(--green));color:var(--accent,var(--green));}
-.step-name{font-size:13px;color:var(--text2);}
+.step-item.active{background:var(--bg3);border-left-color:var(--accent);}
+.step-item.done .step-icon{background:var(--green);color:#fff;border-color:var(--green);}
+.step-icon{width:24px;height:24px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;color:var(--text3);transition:all 0.2s;font-family:var(--font-sans);}
+.step-item.active .step-icon{border-color:var(--accent);color:var(--accent);}
+.step-name{font-size:13px;color:var(--text2);font-family:var(--font-sans);}
 .step-item.active .step-name{color:var(--text);font-weight:500;}
 .sidebar-divider{border-top:1px solid var(--border);margin:16px 0;}
 .lesson-meta{padding:0 20px;}
-.meta-item{font-size:11px;color:var(--text3);margin-bottom:6px;display:flex;gap:6px;}
+.meta-item{font-size:11px;color:var(--text3);margin-bottom:6px;display:flex;gap:6px;font-family:var(--font-sans);}
 .meta-item span{color:var(--text2);}
-
-/* MAIN */
 main{padding:32px 40px;max-width:840px;}
 .lesson-header{margin-bottom:32px;}
-.lesson-breadcrumb{font-size:12px;color:var(--text3);margin-bottom:8px;font-family:'DM Mono',monospace;}
-.lesson-title{font-size:28px;font-weight:600;letter-spacing:-0.5px;color:var(--text);margin-bottom:6px;}
-.lesson-sub{font-size:15px;color:var(--text2);}
+.lesson-breadcrumb{font-size:12px;color:var(--text3);margin-bottom:8px;font-family:var(--font-mono);}
+.lesson-title{font-size:28px;font-weight:600;letter-spacing:-0.5px;color:var(--text);margin-bottom:6px;font-family:var(--font-sans);}
+.lesson-sub{font-size:15px;color:var(--text2);font-family:var(--font-sans);}
 .lesson-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;}
-.tag{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;}
-
-/* STEP PANELS */
+.tag{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;font-family:var(--font-sans);}
 .step-panel{display:none;}
 .step-panel.active{display:block;}
 .panel-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border);}
-.panel-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0;}
-.panel-title{font-size:18px;font-weight:600;color:var(--text);}
-.panel-desc{font-size:13px;color:var(--text2);margin-top:2px;}
-
-/* THEORY */
-.theory-heading{font-size:16px;font-weight:600;color:var(--text);margin-bottom:12px;}
-.theory-body{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:20px;}
+.panel-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0;font-family:var(--font-sans);}
+.panel-title{font-size:18px;font-weight:600;color:var(--text);font-family:var(--font-sans);}
+.panel-desc{font-size:13px;color:var(--text2);margin-top:2px;font-family:var(--font-sans);}
+.theory-heading{font-size:16px;font-weight:600;color:var(--text);margin-bottom:12px;font-family:var(--font-sans);}
+.theory-body{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:20px;font-family:var(--font-sans);}
 .keypoints{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
-.keypoints li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2);padding:10px 14px;background:var(--bg2);border-radius:var(--radius-sm);border-left:2px solid;}
-.keypoints li::before{content:'✓';font-weight:600;flex-shrink:0;margin-top:1px;}
-
-/* EXAMPLE */
+.keypoints li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2);padding:10px 14px;background:var(--bg2);border-radius:var(--radius-sm);border-left:2px solid var(--accent);font-family:var(--font-sans);}
+.kp-check{font-weight:600;flex-shrink:0;margin-top:1px;color:var(--accent);}
 .example-steps{display:flex;flex-direction:column;gap:8px;}
 .ex-step{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:12px 16px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);align-items:start;}
-.ex-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px;}
-.ex-text{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);line-height:1.5;}
-
-/* GUIDED */
+.ex-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px;font-family:var(--font-sans);}
+.ex-text{font-family:var(--font-mono);font-size:12px;color:var(--text2);line-height:1.5;}
 .guided-steps{display:flex;flex-direction:column;gap:6px;}
 .guided-step{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:12px 16px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);align-items:start;}
-.g-num{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
-.g-text{font-size:13px;color:var(--text2);line-height:1.6;}
-.g-text code{font-family:'DM Mono',monospace;font-size:11px;background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:3px;color:var(--text);}
-
-/* PRACTICE */
-.practice-intro{font-size:14px;color:var(--text2);margin-bottom:20px;padding:14px 16px;background:var(--bg2);border-radius:var(--radius-sm);border-left:2px solid;}
+.g-num{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;font-family:var(--font-sans);}
+.g-text{font-size:13px;color:var(--text2);line-height:1.6;font-family:var(--font-sans);}
+.g-text code{font-family:var(--font-mono);font-size:11px;background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:3px;color:var(--text);}
+.practice-intro{font-size:14px;color:var(--text2);margin-bottom:20px;padding:14px 16px;background:var(--bg2);border-radius:var(--radius-sm);border-left:2px solid var(--accent);font-family:var(--font-sans);}
 .practice-questions{display:flex;flex-direction:column;gap:10px;}
 .pq{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;}
-.pq-num{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
-.pq-text{font-size:13px;color:var(--text);margin-bottom:10px;}
-.pq-input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;resize:vertical;min-height:60px;outline:none;transition:border-color 0.15s;}
+.pq-num{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;font-family:var(--font-sans);}
+.pq-text{font-size:13px;color:var(--text);margin-bottom:10px;font-family:var(--font-sans);}
+.pq-input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:var(--font-mono);font-size:12px;resize:vertical;min-height:60px;outline:none;transition:border-color 0.15s;}
 .pq-input:focus{border-color:rgba(255,255,255,0.3);}
-.pq-input.correct{border-color:#1A7A4A;background:rgba(26,122,74,0.05);}
-.pq-input.incorrect{border-color:#C0392B;background:rgba(192,57,43,0.05);}
-.hint-btn{font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 0;text-decoration:underline;}
+.hint-btn{font-size:12px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:var(--font-sans);padding:4px 0;text-decoration:underline;}
 .hint-btn:hover{color:var(--text2);}
-.hint-box{display:none;margin-top:8px;padding:10px 12px;background:rgba(133,79,11,0.1);border-radius:var(--radius-sm);border-left:2px solid #FAC775;font-size:12px;color:#FAC775;}
+.hint-box{display:none;margin-top:8px;padding:10px 12px;background:rgba(133,79,11,0.1);border-radius:var(--radius-sm);border-left:2px solid #FAC775;font-size:12px;color:#FAC775;font-family:var(--font-sans);}
 .hint-box.show{display:block;}
-
-/* ANSWERS */
 .answer-block{display:flex;flex-direction:column;gap:8px;}
 .ans-item{display:grid;grid-template-columns:1fr auto;gap:12px;padding:12px 16px;background:var(--bg2);border-radius:var(--radius-sm);border-left:2px solid #1A7A4A;align-items:start;}
-.ans-text{font-family:'DM Mono',monospace;font-size:12px;color:#9FE1CB;}
-.ans-label{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:rgba(26,122,74,0.2);color:#9FE1CB;white-space:nowrap;}
+.ans-text{font-family:var(--font-mono);font-size:12px;color:#9FE1CB;}
+.ans-label{font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;background:rgba(26,122,74,0.2);color:#9FE1CB;white-space:nowrap;font-family:var(--font-sans);}
 .score-block{padding:20px;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);text-align:center;margin-bottom:20px;}
-.score-num{font-size:40px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);margin-bottom:8px;}
-.score-msg{font-size:14px;color:var(--text2);}
-
-/* HINT STEP */
-.hint-main{font-size:14px;color:var(--text2);line-height:1.75;padding:16px;background:rgba(133,79,11,0.08);border-radius:var(--radius-sm);border-left:2px solid #FAC775;}
-
-/* NAV BUTTONS */
+.score-num{font-size:40px;font-weight:600;font-family:var(--font-mono);margin-bottom:8px;}
+.score-msg{font-size:14px;color:var(--text2);font-family:var(--font-sans);}
+.score-btns{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.mark-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s;}
+.mark-btn.marked{background:#1A7A4A;color:#fff;border-color:#1A7A4A;}
+.hint-main{font-size:14px;color:var(--text2);line-height:1.75;padding:16px;background:rgba(133,79,11,0.08);border-radius:var(--radius-sm);border-left:2px solid #FAC775;font-family:var(--font-sans);}
+.common-mistakes{margin-top:20px;padding:16px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);}
+.cm-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;font-family:var(--font-sans);}
+.cm-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.cm-list li{font-size:13px;color:var(--text2);font-family:var(--font-sans);}
 .step-nav{display:flex;gap:12px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);}
-.btn-prev{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.btn-prev{padding:10px 20px;border-radius:var(--radius-sm);border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:all 0.15s;}
 .btn-prev:hover{background:var(--bg3);color:var(--text);}
-.btn-next{padding:10px 20px;border-radius:var(--radius-sm);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;margin-left:auto;}
+.btn-next{padding:10px 20px;border-radius:var(--radius-sm);border:none;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);transition:opacity 0.15s;margin-left:auto;}
 .btn-next:hover{opacity:0.85;}
-.btn-complete{padding:10px 24px;border-radius:var(--radius-sm);border:none;background:#1A7A4A;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.btn-complete{padding:10px 24px;border-radius:var(--radius-sm);border:none;background:#1A7A4A;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans);margin-left:auto;}
 .btn-complete:hover{opacity:0.85;}
-
 @media(max-width:700px){
   .layout{grid-template-columns:1fr;}
   .sidebar{display:none;}
@@ -126,306 +112,254 @@ main{padding:32px 40px;max-width:840px;}
 </style>
 </head>
 <body>
-
 <nav>
   <div class="nav-logo">Data<span>Hub</span></div>
-  <a class="nav-back" href="index.html">← Back to syllabus</a>
+  <a class="nav-back" href="index.html">&#8592; Back to syllabus</a>
   <div class="nav-right">
     <div class="step-indicator" id="stepDots"></div>
   </div>
 </nav>
-
 <div class="layout">
   <div class="sidebar" id="sidebar"></div>
   <main id="mainPanel"></main>
 </div>
-
 <script src="data.js"></script>
 <script>
-const params = new URLSearchParams(location.search);
-const lvlIdx = parseInt(params.get('l') || 0);
-const lesIdx = parseInt(params.get('i') || 0);
-const level = DATAHUB.levels[lvlIdx];
-const lesson = level.lessons[lesIdx];
-const levelColor = ["#1A7A4A","#854F0B","#185FA5","#534AB7"][lvlIdx];
-const levelLight = ["#9FE1CB","#FAC775","#B5D4F4","#CECBF6"][lvlIdx];
+var P=new URLSearchParams(location.search);
+var lvlIdx=parseInt(P.get('l')||0);
+var lesIdx=parseInt(P.get('i')||0);
+var level=DATAHUB.levels[lvlIdx];
+var lesson=level.lessons[lesIdx];
+var levelColor=["#1A7A4A","#854F0B","#185FA5","#534AB7"][lvlIdx];
+var levelLight=["#9FE1CB","#FAC775","#B5D4F4","#CECBF6"][lvlIdx];
+document.title='DataHub \u2014 '+lesson.code+': '+lesson.title;
+document.documentElement.style.setProperty('--accent',levelColor);
 
-document.title = `DataHub — ${lesson.code}: ${lesson.title}`;
-
-const steps = [
-  { id:'theory',   name:'Theory',       icon:'T', color:'#85B7EB' },
-  { id:'example',  name:'Example',      icon:'E', color:'#FAC775' },
-  { id:'guided',   name:'Guided steps', icon:'G', color:'#9FE1CB' },
-  { id:'practice', name:'Practice task',icon:'P', color:'#CECBF6' },
-  { id:'answers',  name:'Check answers',icon:'✓', color:'#9FE1CB' },
-  { id:'hint',     name:'Hint',          icon:'?', color:'#FAC775' }
+var STEPS=[
+  {name:'Theory',icon:'T',color:'#85B7EB'},
+  {name:'Example',icon:'E',color:'#FAC775'},
+  {name:'Guided steps',icon:'G',color:'#9FE1CB'},
+  {name:'Practice task',icon:'P',color:'#CECBF6'},
+  {name:'Check answers',icon:'\u2713',color:'#9FE1CB'},
+  {name:'Hint',icon:'?',color:'#FAC775'}
 ];
+var currentStep=0;
+var markedCount=0;
+var totalAnswers=(lesson.answers||[]).length;
 
-let currentStep = 0;
-
-// Build sidebar
-function buildSidebar() {
-  const sb = document.getElementById('sidebar');
-  sb.innerHTML = `<div class="sidebar-title">Lesson steps</div>` +
-    steps.map((s,i) => `
-      <div class="step-item ${i===0?'active':''}" id="si-${i}" onclick="goStep(${i})" style="--accent:${s.color};">
-        <div class="step-icon" id="sicon-${i}">${s.icon}</div>
-        <div class="step-name">${s.name}</div>
-      </div>`).join('') +
-    `<div class="sidebar-divider"></div>
-    <div class="lesson-meta">
-      <div class="meta-item">Code: <span>${lesson.code}</span></div>
-      <div class="meta-item">Level: <span>${level.title}</span></div>
-      <div class="meta-item">Time: <span>${lesson.time}</span></div>
-      <div class="meta-item">Pre-req: <span>${lesson.prereq}</span></div>
-      <div class="meta-item">Type: <span>${lesson.type}</span></div>
-    </div>`;
+function buildSidebar(){
+  var sb=document.getElementById('sidebar');
+  var html='<div class="sidebar-title">Lesson steps</div>';
+  STEPS.forEach(function(s,i){
+    html+='<div class="step-item'+(i===0?' active':'')+'" id="si-'+i+'" onclick="goStep('+i+')">'+'<div class="step-icon" id="sicon-'+i+'">'+s.icon+'</div>'+'<div class="step-name">'+s.name+'</div></div>';
+  });
+  html+='<div class="sidebar-divider"></div><div class="lesson-meta">'
+    +'<div class="meta-item">Code: <span>'+lesson.code+'</span></div>'
+    +'<div class="meta-item">Level: <span>'+level.title+'</span></div>'
+    +'<div class="meta-item">Time: <span>'+lesson.time+'</span></div>'
+    +'<div class="meta-item">Pre-req: <span>'+lesson.prereq+'</span></div>'
+    +'<div class="meta-item">Type: <span>'+lesson.type+'</span></div>'
+    +'</div>';
+  sb.innerHTML=html;
 }
 
-// Build step dots
-function buildDots() {
-  const dots = document.getElementById('stepDots');
-  dots.innerHTML = steps.map((s,i) => `<div class="step-dot ${i===0?'active':''}" id="dot-${i}" onclick="goStep(${i})" title="${s.name}"></div>`).join('');
+function buildDots(){
+  var dots=document.getElementById('stepDots');
+  var html='';
+  STEPS.forEach(function(s,i){
+    html+='<div class="step-dot'+(i===0?' active':'')+'" id="dot-'+i+'" onclick="goStep('+i+')" title="'+s.name+'"></div>';
+  });
+  dots.innerHTML=html;
+  var d=document.getElementById('dot-0');
+  d.style.background=levelColor;d.style.width='24px';
 }
 
-// Build main panels
-function buildMain() {
-  const main = document.getElementById('mainPanel');
-
-  // Header
-  const isProject = lesson.type === 'Project';
-  const tags = [
-    `<span class="tag" style="background:rgba(24,95,165,0.2);color:#B5D4F4;border:1px solid rgba(24,95,165,0.3);">${lesson.dataset}</span>`,
-    ...lesson.tools.slice(0,4).map(t => `<span class="tag" style="background:rgba(26,122,74,0.15);color:#9FE1CB;border:1px solid rgba(26,122,74,0.25);">${t}</span>`),
-    `<span class="tag" style="background:rgba(133,79,11,0.2);color:#FAC775;border:1px solid rgba(133,79,11,0.3);">${lesson.time}</span>`,
-    `<span class="tag" style="background:${isProject?'rgba(133,79,11,0.25)':'rgba(26,122,74,0.2)'};color:${isProject?'#FAC775':'#9FE1CB'};border:1px solid ${isProject?'rgba(133,79,11,0.4)':'rgba(26,122,74,0.35)'};">${lesson.type}</span>`
-  ].join('');
-
-  main.innerHTML = `
-    <div class="lesson-header">
-      <div class="lesson-breadcrumb">${level.code} / ${lesson.code}</div>
-      <div class="lesson-title">${lesson.title}</div>
-      <div class="lesson-sub">${lesson.sub}</div>
-      <div class="lesson-tags">${tags}</div>
-    </div>
-    ${buildTheoryPanel()}
-    ${buildExamplePanel()}
-    ${buildGuidedPanel()}
-    ${buildPracticePanel()}
-    ${buildAnswersPanel()}
-    ${buildHintPanel()}`;
+function ph(idx,title,desc){
+  return '<div class="panel-header"><div class="panel-icon" style="background:'+levelColor+';color:#fff;">'+STEPS[idx].icon+'</div><div><div class="panel-title">'+title+'</div><div class="panel-desc">'+desc+'</div></div></div>';
 }
 
-function panelHeader(idx, title, desc) {
-  const s = steps[idx];
-  return `<div class="panel-header">
-    <div class="panel-icon" style="background:${levelColor};color:#fff;">${s.icon}</div>
-    <div><div class="panel-title">${title}</div><div class="panel-desc">${desc}</div></div>
-  </div>`;
+function nb(si){
+  var isLast=si===STEPS.length-1,isFirst=si===0;
+  var next=isLast?'Finish lesson':'Next: '+STEPS[si+1].name+' \u2192';
+  return '<div class="step-nav">'
+    +(isFirst?'':'<button class="btn-prev" onclick="goStep('+(si-1)+'">\u2190 '+STEPS[si-1].name+'</button>')
+    +(isLast
+      ?'<button class="btn-complete" onclick="completeLesson()">Complete lesson \u2713</button>'
+      :'<button class="btn-next" onclick="goStep('+(si+1)+')" style="background:'+levelColor+';">'+next+'</button>')
+    +'</div>';
 }
 
-function navBtns(stepIdx) {
-  const isLast = stepIdx === steps.length - 1;
-  const isFirst = stepIdx === 0;
-  const nextLabel = isLast ? 'Finish lesson' : `Next: ${steps[stepIdx+1].name} →`;
-  return `<div class="step-nav">
-    ${!isFirst ? `<button class="btn-prev" onclick="goStep(${stepIdx-1})">← ${steps[stepIdx-1].name}</button>` : ''}
-    ${isLast
-      ? `<button class="btn-complete" onclick="completelesson()" style="margin-left:auto;">Complete lesson ✓</button>`
-      : `<button class="btn-next" onclick="goStep(${stepIdx+1})" style="background:${levelColor};">${nextLabel}</button>`}
-  </div>`;
+function buildMain(){
+  var main=document.getElementById('mainPanel');
+  var isProject=lesson.type==='Project';
+  var tagsBg={ds:"rgba(24,95,165,0.2)",tool:"rgba(26,122,74,0.15)",time:"rgba(133,79,11,0.2)"};
+  var tagsFg={ds:"#B5D4F4",tool:"#9FE1CB",time:"#FAC775"};
+  var tagsBorder={ds:"rgba(24,95,165,0.3)",tool:"rgba(26,122,74,0.25)",time:"rgba(133,79,11,0.3)"};
+  var toolTags=lesson.tools.slice(0,5).map(function(t){return '<span class="tag" style="background:'+tagsBg.tool+';color:'+tagsFg.tool+';border:1px solid '+tagsBorder.tool+';">'+t+'</span>';}).join('');
+  var outBg=isProject?'rgba(133,79,11,0.25)':'rgba(26,122,74,0.2)';
+  var outFg=isProject?'#FAC775':'#9FE1CB';
+  var outBorder=isProject?'rgba(133,79,11,0.4)':'rgba(26,122,74,0.35)';
+
+  var header='<div class="lesson-header">'
+    +'<div class="lesson-breadcrumb">'+level.code+' / '+lesson.code+'</div>'
+    +'<div class="lesson-title">'+lesson.title+'</div>'
+    +'<div class="lesson-sub">'+lesson.sub+'</div>'
+    +'<div class="lesson-tags">'
+    +'<span class="tag" style="background:'+tagsBg.ds+';color:'+tagsFg.ds+';border:1px solid '+tagsBorder.ds+';">'+lesson.dataset+'</span>'
+    +toolTags
+    +'<span class="tag" style="background:'+tagsBg.time+';color:'+tagsFg.time+';border:1px solid '+tagsBorder.time+';">'+lesson.time+'</span>'
+    +'<span class="tag" style="background:'+outBg+';color:'+outFg+';border:1px solid '+outBorder+';">'+lesson.type+'</span>'
+    +'</div></div>';
+
+  main.innerHTML=header+buildTheory()+buildExample()+buildGuided()+buildPractice()+buildAnswers()+buildHint();
 }
 
-function buildTheoryPanel() {
-  const t = lesson.theory || {};
-  const kp = (t.keypoints || []).map(k => `<li style="border-color:${levelColor};">${k}</li>`).join('');
-  return `<div class="step-panel active" id="panel-0">
-    ${panelHeader(0,'Theory','Read this first — takes about 5 minutes')}
-    <div class="theory-heading">${t.heading || lesson.title}</div>
-    <div class="theory-body">${t.body || ''}</div>
-    ${kp ? `<ul class="keypoints" style="--kpc:${levelColor};">${kp}</ul>` : ''}
-    ${navBtns(0)}
-  </div>`;
+function buildTheory(){
+  var t=lesson.theory||{};
+  var kps=(t.keypoints||[]).map(function(k){return '<li><span class="kp-check">\u2713</span>'+k+'</li>';}).join('');
+  return '<div class="step-panel active" id="panel-0">'
+    +ph(0,'Theory','Read this first \u2014 takes about 5 minutes')
+    +'<div class="theory-heading">'+(t.heading||lesson.title)+'</div>'
+    +'<div class="theory-body">'+(t.body||'')+'</div>'
+    +(kps?'<ul class="keypoints">'+kps+'</ul>':'')
+    +nb(0)+'</div>';
 }
 
-function buildExamplePanel() {
-  const e = lesson.example || {};
-  const exSteps = (e.steps || []).map((s,i) => `
-    <div class="ex-step">
-      <div class="ex-num" style="background:${levelColor};color:#fff;">${i+1}</div>
-      <div class="ex-text">${s}</div>
-    </div>`).join('');
-  return `<div class="step-panel" id="panel-1">
-    ${panelHeader(1,'Example','Study this worked example before attempting the task')}
-    <div class="theory-heading" style="margin-bottom:16px;">${e.heading || 'Example'}</div>
-    <div class="example-steps">${exSteps}</div>
-    ${navBtns(1)}
-  </div>`;
-}
-
-function buildGuidedPanel() {
-  const g = lesson.guided || [];
-  const gSteps = g.map((s,i) => {
-    const formatted = s.replace(/=([A-Z]+\([^)]+\))/g, '<code>=$1</code>').replace(/(Ctrl\+[A-Z0-9]+)/g,'<code>$1</code>');
-    return `<div class="guided-step">
-      <div class="g-num" style="background:${levelColor};">${i+1}</div>
-      <div class="g-text">${formatted}</div>
-    </div>`;
+function buildExample(){
+  var e=lesson.example||{};
+  var steps=(e.steps||[]).map(function(s,i){
+    return '<div class="ex-step"><div class="ex-num" style="background:'+levelColor+';color:#fff;">'+(i+1)+'</div><div class="ex-text">'+s+'</div></div>';
   }).join('');
-  return `<div class="step-panel" id="panel-2">
-    ${panelHeader(2,'Guided steps','Follow these exactly — step by step')}
-    <div class="guided-steps">${gSteps}</div>
-    ${navBtns(2)}
-  </div>`;
+  return '<div class="step-panel" id="panel-1">'
+    +ph(1,'Example','Study this worked example before attempting the task')
+    +'<div class="theory-heading" style="margin-bottom:16px;">'+(e.heading||'Example')+'</div>'
+    +'<div class="example-steps">'+steps+'</div>'
+    +nb(1)+'</div>';
 }
 
-function buildPracticePanel() {
-  const t = lesson.task || {};
-  const questions = (t.questions || []).map((q,i) => `
-    <div class="pq">
-      <div class="pq-num" style="color:${levelColor};">Question ${i+1}</div>
-      <div class="pq-text">${q}</div>
-      <textarea class="pq-input" id="pq-${i}" placeholder="Write your formula or answer here..." rows="2"></textarea>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
-        <button class="hint-btn" onclick="toggleInlineHint(${i})">Show hint</button>
-        <div id="hint-${i}" class="hint-box">${t.answer_hint || ''}</div>
-      </div>
-    </div>`).join('');
-
-  return `<div class="step-panel" id="panel-3">
-    ${panelHeader(3,'Practice task','Now do it yourself — no peeking at the answers yet')}
-    <div class="practice-intro" style="border-color:${levelColor};">
-      <strong style="color:var(--text);">${t.heading || 'Your turn'}</strong><br>
-      ${t.description || ''}
-    </div>
-    <div class="practice-questions">${questions}</div>
-    ${navBtns(3)}
-  </div>`;
+function buildGuided(){
+  var g=lesson.guided||[];
+  var steps=g.map(function(s,i){
+    var fmt=s.replace(/=([\w]+\([^)]*\))/g,'<code>=$1</code>').replace(/(Ctrl\+[\w]+)/g,'<code>$1</code>');
+    return '<div class="guided-step"><div class="g-num" style="background:'+levelColor+';">'+(i+1)+'</div><div class="g-text">'+fmt+'</div></div>';
+  }).join('');
+  return '<div class="step-panel" id="panel-2">'
+    +ph(2,'Guided steps','Follow these exactly \u2014 step by step')
+    +'<div class="guided-steps">'+steps+'</div>'
+    +nb(2)+'</div>';
 }
 
-function buildAnswersPanel() {
-  const answers = lesson.answers || [];
-  const items = answers.map((a,i) => `
-    <div class="ans-item">
-      <div class="ans-text">${a}</div>
-      <div class="ans-label">Answer ${i+1}</div>
-    </div>`).join('');
-
-  return `<div class="step-panel" id="panel-4">
-    ${panelHeader(4,'Check answers','Compare your work to the correct answers below')}
-    <div class="score-block">
-      <div class="score-num" style="color:${levelColor};">?/${answers.length}</div>
-      <div class="score-msg">How many did you get right?</div>
-      <div style="display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;">
-        ${answers.map((_,i)=>`<button onclick="markAnswer(${i},this)" style="padding:6px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;">Q${i+1} ✓</button>`).join('')}
-      </div>
-    </div>
-    <div class="answer-block">${items}</div>
-    ${navBtns(4)}
-  </div>`;
+function buildPractice(){
+  var t=lesson.task||{};
+  var qs=(t.questions||[]).map(function(q,i){
+    return '<div class="pq">'
+      +'<div class="pq-num" style="color:'+levelColor+';">Question '+(i+1)+'</div>'
+      +'<div class="pq-text">'+q+'</div>'
+      +'<textarea class="pq-input" id="pq-'+i+'" placeholder="Write your formula or answer here..." rows="2"></textarea>'
+      +'<div style="margin-top:6px;">'
+        +'<button class="hint-btn" onclick="toggleHint('+i+')">Show hint</button>'
+        +'<div id="hint-'+i+'" class="hint-box">'+(t.answer_hint||'')+'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+  return '<div class="step-panel" id="panel-3">'
+    +ph(3,'Practice task','Now do it yourself \u2014 no peeking at the answers yet')
+    +'<div class="practice-intro"><strong style="color:var(--text);">'+(t.heading||'Your turn')+'</strong><br>'+(t.description||'')+'</div>'
+    +'<div class="practice-questions">'+qs+'</div>'
+    +nb(3)+'</div>';
 }
 
-function buildHintPanel() {
-  const h = lesson.hint || 'Take your time with this lesson. Re-read the theory and guided steps if you are stuck.';
-  return `<div class="step-panel" id="panel-5">
-    ${panelHeader(5,'Hint','Use this if you are genuinely stuck after trying for 5+ minutes')}
-    <div class="hint-main">${h}</div>
-    <div style="margin-top:20px;padding:16px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);">
-      <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;">Common mistakes to check:</div>
-      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
-        <li style="font-size:13px;color:var(--text2);">→ Did your formula start with an = sign?</li>
-        <li style="font-size:13px;color:var(--text2);">→ Are your cell references correct? (count the columns)</li>
-        <li style="font-size:13px;color:var(--text2);">→ Did you close all brackets?</li>
-        <li style="font-size:13px;color:var(--text2);">→ Are text criteria in quotes? ("HUL" not HUL)</li>
-      </ul>
-    </div>
-    ${navBtns(5)}
-  </div>`;
+function buildAnswers(){
+  var answers=lesson.answers||[];
+  var markBtns=answers.map(function(_,i){return '<button class="mark-btn" id="mb-'+i+'" onclick="markAns('+i+')">Q'+(i+1)+' \u2713</button>';}).join('');
+  var items=answers.map(function(a,i){return '<div class="ans-item"><div class="ans-text">'+a+'</div><div class="ans-label">Answer '+(i+1)+'</div></div>';}).join('');
+  return '<div class="step-panel" id="panel-4">'
+    +ph(4,'Check answers','Compare your work to the correct answers below')
+    +'<div class="score-block">'
+      +'<div class="score-num" id="scoreNum" style="color:'+levelColor+';">?/'+answers.length+'</div>'
+      +'<div class="score-msg" id="scoreMsg">How many did you get right?</div>'
+      +'<div class="score-btns">'+markBtns+'</div>'
+    +'</div>'
+    +'<div class="answer-block">'+items+'</div>'
+    +nb(4)+'</div>';
 }
 
-let markedCount = 0;
-const totalAnswers = (lesson.answers || []).length;
-
-function markAnswer(i, btn) {
-  btn.style.background = '#1A7A4A';
-  btn.style.color = '#fff';
-  btn.style.borderColor = '#1A7A4A';
-  markedCount++;
-  document.querySelector('.score-num').textContent = markedCount + '/' + totalAnswers;
-  if (markedCount === totalAnswers) {
-    document.querySelector('.score-msg').textContent = 'All done! Click Complete lesson to move on.';
-  }
+function buildHint(){
+  var h=lesson.hint||'Take your time. Re-read the theory and guided steps if you are stuck.';
+  return '<div class="step-panel" id="panel-5">'
+    +ph(5,'Hint','Use this only after trying for at least 5 minutes')
+    +'<div class="hint-main">'+h+'</div>'
+    +'<div class="common-mistakes">'
+      +'<div class="cm-title">Common mistakes to check:</div>'
+      +'<ul class="cm-list">'
+        +'<li>\u2192 Did your formula start with an = sign?</li>'
+        +'<li>\u2192 Are your cell references correct? (count the columns carefully)</li>'
+        +'<li>\u2192 Did you close all brackets?</li>'
+        +'<li>\u2192 Are text criteria in quotes? ("HUL" not HUL)</li>'
+        +'<li>\u2192 Did you lock ranges with $ when dragging formulas?</li>'
+      +'</ul>'
+    +'</div>'
+    +nb(5)+'</div>';
 }
 
-function toggleInlineHint(i) {
-  const box = document.getElementById('hint-' + i);
+function toggleHint(i){
+  var box=document.getElementById('hint-'+i);
   box.classList.toggle('show');
 }
 
-function goStep(idx) {
-  if (idx < 0 || idx >= steps.length) return;
-
-  // hide current
-  document.getElementById('panel-' + currentStep).classList.remove('active');
-  document.getElementById('si-' + currentStep).classList.remove('active');
-  document.getElementById('dot-' + currentStep).classList.remove('active');
-  document.getElementById('dot-' + currentStep).style.background = '';
-  document.getElementById('dot-' + currentStep).style.width = '';
-
-  // mark done
-  if (idx > currentStep) {
-    document.getElementById('si-' + currentStep).classList.add('done');
-    document.getElementById('sicon-' + currentStep).textContent = '✓';
-    document.getElementById('dot-' + currentStep).classList.add('done');
-    document.getElementById('dot-' + currentStep).style.background = '#1A7A4A';
+function markAns(i){
+  var btn=document.getElementById('mb-'+i);
+  if(btn.classList.contains('marked'))return;
+  btn.classList.add('marked');
+  markedCount++;
+  document.getElementById('scoreNum').textContent=markedCount+'/'+totalAnswers;
+  if(markedCount===totalAnswers){
+    document.getElementById('scoreMsg').textContent='All done! Click Complete lesson to move on.';
   }
-
-  currentStep = idx;
-
-  // show new
-  document.getElementById('panel-' + currentStep).classList.add('active');
-  document.getElementById('si-' + currentStep).classList.add('active');
-  const dot = document.getElementById('dot-' + currentStep);
-  dot.classList.add('active');
-  dot.style.background = levelColor;
-  dot.style.width = '24px';
-
-  // scroll to top
-  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-function completelesson() {
-  // Save progress
-  const key = `datahub_l${lvlIdx}_les${lesIdx}`;
-  localStorage.setItem(key, 'complete');
+function goStep(idx){
+  if(idx<0||idx>=STEPS.length)return;
+  document.getElementById('panel-'+currentStep).classList.remove('active');
+  document.getElementById('si-'+currentStep).classList.remove('active');
+  var oldDot=document.getElementById('dot-'+currentStep);
+  oldDot.style.width='';
+  if(idx>currentStep){
+    document.getElementById('si-'+currentStep).classList.add('done');
+    document.getElementById('sicon-'+currentStep).textContent='\u2713';
+    oldDot.classList.add('done');
+    oldDot.style.background='#1A7A4A';
+  } else {
+    oldDot.style.background='';
+    oldDot.classList.remove('done');
+  }
+  currentStep=idx;
+  document.getElementById('panel-'+currentStep).classList.add('active');
+  document.getElementById('si-'+currentStep).classList.add('active');
+  var newDot=document.getElementById('dot-'+currentStep);
+  newDot.style.background=levelColor;
+  newDot.style.width='24px';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-  // Navigate to next lesson or back to syllabus
-  const nextLesIdx = lesIdx + 1;
-  if (nextLesIdx < level.lessons.length) {
-    if (confirm(`Lesson complete! Start next lesson: ${level.lessons[nextLesIdx].code} — ${level.lessons[nextLesIdx].title}?`)) {
-      window.location.href = `lesson.html?l=${lvlIdx}&i=${nextLesIdx}`;
+function completeLesson(){
+  localStorage.setItem('datahub_l'+lvlIdx+'_les'+lesIdx,'complete');
+  var next=lesIdx+1;
+  if(next<level.lessons.length){
+    if(confirm('Lesson complete! Start next: '+level.lessons[next].code+' \u2014 '+level.lessons[next].title+'?')){
+      window.location.href='lesson.html?l='+lvlIdx+'&i='+next;
     } else {
-      window.location.href = 'index.html';
+      window.location.href='index.html';
     }
   } else {
-    alert('Level complete! You have finished all lessons in this level. Well done!');
-    window.location.href = 'index.html';
+    alert('Level complete! All lessons in this level are done. Well done!');
+    window.location.href='index.html';
   }
 }
 
-// Init
 buildSidebar();
 buildDots();
 buildMain();
-
-// Set accent color
-document.documentElement.style.setProperty('--accent', levelColor);
-
-// Highlight active dot
-const activeDot = document.getElementById('dot-0');
-activeDot.style.background = levelColor;
-activeDot.style.width = '24px';
 </script>
 </body>
 </html>
-
