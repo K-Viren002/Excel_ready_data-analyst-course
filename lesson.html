@@ -785,66 +785,153 @@ main{overflow-y:auto;}
 </div></main>
 </div>
 
+<script src="data.js"></script>
 <script>
-var cur=0, ticked=0;
-var TOTAL=5;
+var QS=new URLSearchParams(location.search);
+var LIDX=parseInt(QS.get('l')||0);
+var IIDX=parseInt(QS.get('i')||1);
+var IS_L12=(LIDX===0&&IIDX===1);
 
-function buildPills(){
-  var labels=['▶','T','E','G','P','✓','?'];
-  var ph=document.getElementById('pills');
-  var h='';
-  for(var i=0;i<7;i++){
-    h+='<button class="pill'+(i===0?' active':'')+'" id="pl'+i+'" onclick="go('+i+')" title="'+(['Video','Theory','Example','Guided','Practice','Answers','Hints'][i])+'"></button>';
+if(IS_L12){
+  document.title='DataHub — L1.2: Basic Math Formulas';
+  var cur=0,ticked=0,TOTAL=5;
+  function buildPills(){
+    var ph=document.getElementById('pills'),h='';
+    for(var i=0;i<7;i++){h+='<button class="pill'+(i===0?' active':'')+ '" id="pl'+i+'" onclick="go('+i+')" title="'+(['Video','Theory','Example','Guided','Practice','Answers','Hints'][i])+'"></button>';}
+    ph.innerHTML=h;
+    document.getElementById('pl0').style.width='36px';
+    document.getElementById('pl0').style.background='#1A7A4A';
   }
-  ph.innerHTML=h;
-  document.getElementById('pl0').style.width='36px';
-  document.getElementById('pl0').style.background='#1A7A4A';
-}
-
-function go(idx){
-  if(idx<0||idx>6) return;
-  document.getElementById('p'+cur).classList.remove('active');
-  document.getElementById('si-'+cur).classList.remove('active');
-  var op=document.getElementById('pl'+cur);
-  op.style.width='';op.style.background='';
-  if(idx>cur){
-    document.getElementById('si-'+cur).classList.add('done');
-    document.getElementById('ic-'+cur).textContent='✓';
-    op.classList.add('done');op.style.background='#1A7A4A';
+  function go(idx){
+    if(idx<0||idx>6)return;
+    document.getElementById('p'+cur).classList.remove('active');
+    document.getElementById('si-'+cur).classList.remove('active');
+    var op=document.getElementById('pl'+cur);op.style.width='';op.style.background='';
+    if(idx>cur){document.getElementById('si-'+cur).classList.add('done');document.getElementById('ic-'+cur).textContent='✓';op.classList.add('done');op.style.background='#1A7A4A';}
+    cur=idx;
+    document.getElementById('p'+cur).classList.add('active');
+    document.getElementById('si-'+cur).classList.add('active');
+    var np=document.getElementById('pl'+cur);np.style.width='36px';np.style.background='#1A7A4A';
+    window.scrollTo({top:0,behavior:'smooth'});
   }
-  cur=idx;
-  document.getElementById('p'+cur).classList.add('active');
-  document.getElementById('si-'+cur).classList.add('active');
-  var np=document.getElementById('pl'+cur);
-  np.style.width='36px';np.style.background='#1A7A4A';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+  function th(i){document.getElementById('h'+i).classList.toggle('show');}
+  function tick(i){
+    var btn=document.getElementById('mb'+i);
+    if(btn.classList.contains('ticked'))return;
+    btn.classList.add('ticked');ticked++;
+    document.getElementById('snum').textContent=ticked+'/'+TOTAL;
+    if(ticked===TOTAL)document.getElementById('smsg').textContent='Perfect score! Ready for L1.3.';
+    else if(ticked>=4)document.getElementById('smsg').textContent='Great work! Review missed questions.';
+  }
+  function done(){
+    localStorage.setItem('datahub_l0_les1','complete');
+    if(confirm('Lesson L1.2 complete! ✓\nStart next: L1.3 — Counting with conditions?')){window.location.href='lesson.html?l=0&i=2';}
+    else{window.location.href='index.html';}
+  }
+  buildPills();
 
-function th(i){
-  var b=document.getElementById('h'+i);
-  b.classList.toggle('show');
-}
+}else{
+  /* ── DYNAMIC ROUTE for all other lessons ── */
+  document.querySelector('.layout').innerHTML='<div class="sidebar" id="dSB"></div><main><div class="wrap" id="dM"></div></main>';
+  document.getElementById('pills').innerHTML='';
 
-function tick(i){
-  var btn=document.getElementById('mb'+i);
-  if(btn.classList.contains('ticked')) return;
-  btn.classList.add('ticked');
-  ticked++;
-  document.getElementById('snum').textContent=ticked+'/'+TOTAL;
-  if(ticked===TOTAL) document.getElementById('smsg').textContent='Perfect score! You are ready for Lesson L1.3.';
-  else if(ticked>=4) document.getElementById('smsg').textContent='Great work! Review any missed questions above.';
-}
+  if(typeof DATAHUB==='undefined'){
+    document.getElementById('dM').innerHTML='<div style="padding:40px;color:var(--text2);">Error loading data.js. <a href="index.html" style="color:#9FE1CB;">Back to syllabus</a></div>';
+  }else{
+    var level=DATAHUB.levels[LIDX];
+    var lesson=level?level.lessons[IIDX]:null;
+    if(!level||!lesson){
+      document.getElementById('dM').innerHTML='<div style="padding:40px;color:var(--text2);">Lesson not found. <a href="index.html" style="color:#9FE1CB;">Back to syllabus</a></div>';
+    }else{
+      var AC=['#1A7A4A','#854F0B','#185FA5','#534AB7'][LIDX];
+      var ACL=['#9FE1CB','#FAC775','#B5D4F4','#CECBF6'][LIDX];
+      document.title='DataHub — '+lesson.code+': '+lesson.title;
+      var isProject=lesson.type==='Project';
+      var numBg=isProject?'#854F0B':AC;
 
-function done(){
-  localStorage.setItem('datahub_l0_les1','complete');
-  if(confirm('Lesson L1.2 complete! ✓\nStart next lesson: L1.3 — Counting with conditions?')){
-    window.location.href='lesson.html?l=0&i=2';
-  } else {
-    window.location.href='index.html';
+      var VMAP={'L1.1':'rwbho0CgEAI','L1.3':'q8XMkFqNVB8','L1.4':'VlodsAKnrIY','L1.5':'k0KfFhPJKDs','L1.6':'DAU0qqh_I-A','L1.7':'XAEgSmx-Zk4','L1.P':'rwbho0CgEAI','L2.1':'M4sXY2HkPfA','L2.2':'M4sXY2HkPfA','L2.3':'WfSMqaLQ6MQ','L2.4':'oBN6kIVHkpA','L2.5':'9NUjHBNWe9M','L2.6':'TsHJiSl7IFE','L2.7':'TsHJiSl7IFE','L2.8':'TsHJiSl7IFE','L2.P':'9NUjHBNWe9M','L3.1':'KqpE6RJpCdw','L3.2':'q8XMkFqNVB8','L3.3':'M4sXY2HkPfA','L3.4':'M4sXY2HkPfA','L3.5':'KqpE6RJpCdw','L3.6':'9NUjHBNWe9M','L3.7':'M4sXY2HkPfA','L3.8':'TsHJiSl7IFE','L3.P':'9NUjHBNWe9M','L4.1':'aKhxd3aPFi4','L4.2':'aKhxd3aPFi4','L4.3':'oBN6kIVHkpA','L4.4':'9NUjHBNWe9M','L4.5':'DAU0qqh_I-A','L4.6':'aKhxd3aPFi4','L4.C':'9NUjHBNWe9M'};
+      var SN=['Video','Theory','Example','Guided','Practice','Answers','Hints'];
+      var SI=['\u25b6','T','E','G','P','\u2713','?'];
+      var ST=['8 min','6 min','8 min','10 min','15 min','5 min',''];
+      var dcur=0,dticked=0,dTotal=(lesson.answers||[]).length;
+
+      /* sidebar */
+      var sb='<div class="sb-label">Steps</div>';
+      SN.forEach(function(s,i){sb+='<div class="sb-item'+(i===0?' active':'')+'" id="dsi-'+i+'" onclick="dgo('+i+')">'+'<div class="sb-icon" id="dic-'+i+'">'+SI[i]+'</div><div class="sb-name">'+s+'</div>'+(ST[i]?'<div class="sb-time">'+ST[i]+'</div>':'')+'</div>';});
+      sb+='<div class="sb-div"></div><div class="sb-meta"><div class="sb-row">Code: <span>'+lesson.code+'</span></div><div class="sb-row">Level: <span>'+level.title+'</span></div><div class="sb-row">Dataset: <span>'+lesson.dataset.split('(')[0].trim()+'</span></div><div class="sb-row">Time: <span>'+lesson.time+'</span></div><div class="sb-row">Pre-req: <span>'+lesson.prereq+'</span></div></div>';
+      document.getElementById('dSB').innerHTML=sb;
+
+      /* pills */
+      var ph='';
+      SN.forEach(function(s,i){ph+='<button class="pill'+(i===0?' active':'')+'" id="dpl'+i+'" onclick="dgo('+i+')" title="'+s+'"></button>';});
+      document.getElementById('pills').innerHTML=ph;
+      document.getElementById('dpl0').style.width='36px';
+      document.getElementById('dpl0').style.background=AC;
+
+      function nb(si){
+        var isLast=si===SN.length-1;
+        return '<div class="step-nav">'+(si>0?'<button class="btn-prev" onclick="dgo('+(si-1)+')">\u2190 '+SN[si-1]+'</button>':'')+(isLast?'<button class="btn-done" onclick="dDone()" style="background:'+AC+';">Complete lesson \u2713</button>':'<button class="btn-next" onclick="dgo('+(si+1)+')" style="background:'+AC+';">Next: '+SN[si+1]+' \u2192</button>')+'</div>';
+      }
+      function ph2(si){return '<div class="ph"><div class="ph-icon" style="background:'+AC+';">'+SI[si]+'</div><div><div class="ph-title">'+SN[si]+'</div><div class="ph-sub">'+['Watch first — gives the full picture','Understand before you practise','Study this in your own Excel','Follow each step right now','Attempt without looking at answers','Compare your work here','Use only if genuinely stuck'][si]+'</div></div></div>';}
+
+      var t=lesson.theory||{};
+      var e=lesson.example||{};
+      var taskQ=((lesson.task||{}).questions||[]);
+
+      var kps=(t.keypoints||[]).map(function(k){var p=k.split('\u2014');return '<li class="kp-item"><span class="kp-check" style="color:'+AC+';">\u2713</span><div class="kp-content"><div class="kp-title">'+(p[0]||k).trim()+'</div>'+(p[1]?'<div class="kp-desc">'+p[1].trim()+'</div>':'')+'</div></li>';}).join('');
+      var learnCards=(t.keypoints||[]).map(function(k){var p=k.split('\u2014');return '<div class="learn-card"><div class="lc-icon" style="color:'+ACL+';">&#10003;</div><div class="lc-title">'+(p[0]||k).trim()+'</div><div class="lc-desc">'+(p[1]||'').trim()+'</div></div>';}).join('');
+      var exSteps=(e.steps||[]).map(function(s,i){return '<div class="step-block"><div class="step-head"><div class="step-num" style="background:'+AC+';">'+(i+1)+'</div><div class="step-title-area"><div class="step-action">Step '+(i+1)+'</div><div class="step-where">'+lesson.dataset.split('(')[0].trim()+'</div></div></div><div class="step-body"><div class="step-detail">'+s+'</div></div></div>';}).join('');
+      var gSteps=(lesson.guided||[]).map(function(s,i){var fmt=s.replace(/=[\w]+\([^)]*\)/g,function(m){return '<code>'+m+'</code>';}).replace(/(Ctrl\+[\w]+)/g,'<code>$1</code>');return '<div class="g-step"><div class="g-num" style="background:'+AC+';">'+(i+1)+'</div><div class="g-body"><div class="g-action">Step '+(i+1)+'</div><div class="g-detail">'+fmt+'</div></div></div>';}).join('');
+      var practiceHtml=taskQ.map(function(q,i){return '<div class="pq"><div class="pq-hdr"><div class="pq-num" style="color:'+ACL+';">Question '+(i+1)+'</div><div class="pq-text">'+q+'</div></div><div class="pq-body"><textarea class="pq-input" id="dpq'+i+'" placeholder="Type your formula or answer..." rows="2"></textarea><div class="hint-row"><button class="hint-btn" onclick="dth('+i+')">Show hint</button></div><div id="dhint'+i+'" class="hint-reveal">'+((lesson.task||{}).answer_hint||'Check the Theory and Example sections for the formula pattern.')+'</div></div></div>';}).join('');
+      var scoreMarks=(lesson.answers||[]).map(function(_,i){return '<button class="mark-btn" id="dmb'+i+'" onclick="dtick('+i+')">Q'+(i+1)+' \u2713</button>';}).join('');
+      var ansHtml=(lesson.answers||[]).map(function(a,i){return '<div class="ans-card"><div class="ans-hdr"><div class="ans-q">'+(taskQ[i]||'Q'+(i+1))+'</div><div class="ans-badge">Answer '+(i+1)+'</div></div><div class="ans-body"><code class="ans-formula" style="background:'+AC+'1a;color:'+ACL+';border:1px solid '+AC+'40;">'+a+'</code><div class="ans-explain">Check that your column letters match your actual dataset. The function and structure should match this answer exactly.</div></div></div>';}).join('');
+
+      var vid=VMAP[lesson.code];
+      var tagHtml='<span class="tag" style="background:rgba(24,95,165,0.2);color:#B5D4F4;border:1px solid rgba(24,95,165,0.3);">'+lesson.dataset.split('(')[0].trim()+'</span>'+lesson.tools.slice(0,5).map(function(t){return '<span class="tag tag-tool">'+t+'</span>';}).join('')+'<span class="tag tag-time">'+lesson.time+'</span><span class="tag tag-pre">Pre-req: '+lesson.prereq+'</span><span class="tag" style="background:'+numBg+'33;color:'+ACL+';border:1px solid '+numBg+'55;">'+lesson.type+'</span>';
+
+      document.getElementById('dM').innerHTML=
+        '<div class="lesson-hdr"><div class="crumb">'+level.code+' <span style="color:var(--border2);">/</span> '+lesson.code+'</div><div class="lesson-title">'+lesson.title+'</div><div class="lesson-sub">'+lesson.sub+'</div><div class="tags">'+tagHtml+'</div></div>'
+        +'<div class="panel active" id="dp0">'+ph2(0)+(vid?'<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/'+vid+'?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe></div><div class="video-note"><strong>How to use this lesson:</strong> Watch the video first, then read Theory, then follow the Example in your own Excel, then do the Practice task without looking at answers.</div>':'<div style="padding:20px;background:var(--bg2);border-radius:var(--radius);border:1px solid var(--border);color:var(--text3);text-align:center;">Video coming soon for this lesson.</div>')+(learnCards?'<div class="section-h" style="margin-top:24px;">What you will learn</div><div class="learn-grid">'+learnCards+'</div>':'')+nb(0)+'</div>'
+        +'<div class="panel" id="dp1">'+ph2(1)+'<div class="section-h" style="margin-top:0;">'+(t.heading||lesson.title)+'</div><div class="body-text"><p>'+(t.body||'').replace(/\. ([A-Z])/g,'.</p><p>$1')+'</p></div>'+(kps?'<ul class="keypoints">'+kps+'</ul>':'')+nb(1)+'</div>'
+        +'<div class="panel" id="dp2">'+ph2(2)+'<div class="ex-intro"><strong style="color:var(--text);">Dataset:</strong> '+lesson.dataset.split('(')[0].trim()+' &mdash; '+(e.heading||'Follow these steps in your Excel file.')+'</div>'+(exSteps||'<div class="body-text">Work through the dataset using the formulas from the Theory section.</div>')+nb(2)+'</div>'
+        +'<div class="panel" id="dp3">'+ph2(3)+'<div class="callout callout-tip" style="margin-bottom:20px;"><strong>Before you start:</strong> Open your '+lesson.dataset.split('(')[0].trim()+' file in Excel.</div>'+(gSteps||'<div class="body-text">Follow the Worked Example step by step in your own Excel file.</div>')+nb(3)+'</div>'
+        +'<div class="panel" id="dp4">'+ph2(4)+'<div class="brief-box"><div class="brief-label">Your task</div><div class="brief-text">'+((lesson.task||{}).description||'Complete all questions below using your dataset.')+'</div></div><div class="practice-qs">'+practiceHtml+'</div>'+nb(4)+'</div>'
+        +'<div class="panel" id="dp5">'+ph2(5)+'<div class="score-card"><div class="score-num" id="dsnum">0/'+dTotal+'</div><div class="score-msg" id="dsmsg">Tick each question you answered correctly</div><div class="score-marks">'+scoreMarks+'</div></div><div class="ans-list">'+ansHtml+'</div>'+nb(5)+'</div>'
+        +'<div class="panel" id="dp6">'+ph2(6)+'<div class="hint-main">'+(lesson.hint||'Re-read the Theory and try the Guided Steps again before using these hints.')+'</div><div class="mistakes-box"><div class="mistakes-title">Common mistakes to check</div>'+['Did your formula start with = ?','Are your column letters correct for this dataset?','Did you close all brackets?','Are text criteria inside double quotes? e.g. "HUL" not HUL','Did you use the right function — COUNT vs COUNTA?'].map(function(m,i){return '<div class="mistake-card"><div class="mc-num">'+(i+1)+'</div><div class="mc-body"><div class="mc-text">'+m+'</div></div></div>';}).join('')+'</div>'+nb(6)+'</div>';
+
+      function dgo(idx){
+        if(idx<0||idx>6)return;
+        document.getElementById('dp'+dcur).classList.remove('active');
+        document.getElementById('dsi-'+dcur).classList.remove('active');
+        var op=document.getElementById('dpl'+dcur);op.style.width='';op.style.background='';
+        if(idx>dcur){document.getElementById('dsi-'+dcur).classList.add('done');document.getElementById('dic-'+dcur).textContent='\u2713';op.classList.add('done');op.style.background=AC;}
+        dcur=idx;
+        document.getElementById('dp'+dcur).classList.add('active');
+        document.getElementById('dsi-'+dcur).classList.add('active');
+        var np=document.getElementById('dpl'+dcur);np.style.width='36px';np.style.background=AC;
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      function dth(i){document.getElementById('dhint'+i).classList.toggle('show');}
+      function dtick(i){
+        var btn=document.getElementById('dmb'+i);
+        if(btn.classList.contains('ticked'))return;
+        btn.classList.add('ticked');dticked++;
+        document.getElementById('dsnum').textContent=dticked+'/'+dTotal;
+        if(dticked===dTotal)document.getElementById('dsmsg').textContent='All done! Click Complete lesson to continue.';
+      }
+      function dDone(){
+        localStorage.setItem('datahub_l'+LIDX+'_les'+IIDX,'complete');
+        var nextI=IIDX+1;
+        if(nextI<level.lessons.length){
+          var nextL=level.lessons[nextI];
+          if(confirm('Lesson complete! \u2713\nStart next: '+nextL.code+' \u2014 '+nextL.title+'?')){window.location.href='lesson.html?l='+LIDX+'&i='+nextI;}
+          else{window.location.href='index.html';}
+        }else{alert('Level complete! All lessons in '+level.title+' are done.');window.location.href='index.html';}
+      }
+      window.dgo=dgo;window.dth=dth;window.dtick=dtick;window.dDone=dDone;
+    }
   }
 }
-
-buildPills();
 </script>
 </body>
 </html>
